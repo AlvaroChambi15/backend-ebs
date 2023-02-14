@@ -1,0 +1,74 @@
+#### REGISTRO
+
+POST http://127.0.0.1:8000/api/v1/auth/registro
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Admin",
+    "email": "admin@gmail.com",
+    "password": "admin123",
+    "c_password": "admin12s3"
+}
+
+#### LOGIN
+ 
+POST http://127.0.0.1:8000/api/v1/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "alvaro@gmail.com",
+    "password": "alvaro123"
+}
+
+#### PERFIL
+
+GET http://127.0.0.1:8000/api/v1/auth/perfil
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 21|HFET2rfjp2a11moYFqc86FLUChRUKqfYn7Ufojfp
+
+
+#### LOGOUT
+
+GET http://127.0.0.1:8000/api/v1/auth/logout
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 42|K35XRgyXrxrm8m5fGv06wMgHPcU9GwhMtBLuUVLX
+
+
+### PDF
+GET http://127.0.0.1:8000/api/pdf
+
+### RESET PASSWORD POR EMAIL
+POST http://127.0.0.1:8000/api/recuperar-password
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email" : "alvaro@gmail.com"
+}
+
+
+### RESET
+POST http://127.0.0.1:8000/api/reset-password
+Content-Type: application/json
+Accept: application/json
+
+{
+    "token" : "8d7f8eda89e92ea18d1a861225f137367177644cc99ba09a07e4a976ba0f6224",
+    "email" : "alvaro@gmail.com",
+    "password" : "alvaro321",
+    "password_confirmation" : "alvaro321"
+}
+
+### Verificar token
+
+POST http://127.0.0.1:8000/api/v1/auth/token-verify
+Content-Type: application/json
+Accept: application/json
+
+{
+    "token" : "102|xVyWLOTelTVTTKBZgNpk5hnp0dEnvrgUDP6xvGvx"
+}
