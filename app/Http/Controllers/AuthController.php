@@ -17,29 +17,55 @@ class AuthController extends Controller
             "password" => "required"
         ]);
 
-        // verificar
+        // almacenamos credenciales
         $credenciales = request(["email", "password"]);
+
+
+        // Verificamos si el usuario esta registrado
+        $usuarioQuery = User::where('email', '=', $request->email)->first();
+
+
+        //validamos si el usuario tiene permiso para acceder / SI-NO
+        if (!$usuarioQuery) {
+            return response()->json(["mensaje" => "No Autorizado"], 401);
+        } else {
+
+            if ($usuarioQuery->permiso == true) {
+                // return response()->json(["usuario" => $usuarioQuery]);
+                // return response()->json(["usuario" => $usuarioQuery, 'Permiso' => 'SI tiene permiso']);
+
+
+                // Intentamos hacer el login
+                if (!Auth::attempt($credenciales)) {
+                    return response()->json([
+                        "mensaje" => "No Autorizado Incorrect"
+                    ], 401);
+                }
+
+                // generar tonken para el usuario logeado
+                $usuario = $request->user();
+                $tokenResult = $usuario->createToken("login");
+                $token = $tokenResult->plainTextToken;
+
+                // Encriptamos los datos del usuario
+                $userProtect = base64_encode($usuario);
+
+                // responder con datos encriptados del usuario y token generado
+                return response()->json([
+                    "access_token" => base64_encode($token),
+                    "token_type" => "Bearer",
+                    "usuario" => base64_encode($usuario)
+                ]);
+            } else {
+                return response()->json(["usuario" => $usuarioQuery, 'Permiso' => 'NO tiene permiso'], 403);
+            }
+        }
 
         //return $request->user();
 
-        if (!Auth::attempt($credenciales)) {
-            return response()->json([
-                "mensaje" => "No Autorizado"
-            ], 401);
-        }
 
 
-        // generar tonken
-        $usuario = $request->user();
-        $tokenResult = $usuario->createToken("login");
-        $token = $tokenResult->plainTextToken;
 
-        // responder
-        return response()->json([
-            "access_token" => $token,
-            "token_type" => "Bearer",
-            "usuario" => $usuario
-        ]);
     }
 
     public function registro(Request $request)
@@ -88,7 +114,17 @@ class AuthController extends Controller
 
     public function perfil(Request $request)
     {
-        return response()->json($request->user());
+        // return $request->user();
+        // return response()->json($request->user());
+        // return response()->json(Auth::user());
+
+
+        $usuario = $request->user();
+
+        $userProtect = base64_encode($usuario);
+
+
+        return response()->json(["user" => $userProtect], 200);
     }
 
     public function tokenVerify(Request $request)

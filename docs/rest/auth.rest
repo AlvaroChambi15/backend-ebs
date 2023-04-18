@@ -5,10 +5,10 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "name": "Admin",
-    "email": "admin@gmail.com",
-    "password": "admin123",
-    "c_password": "admin12s3"
+    "name": "Alvaro",
+    "email": "alvaro@gmail.com",
+    "password": "alvaro123",
+    "c_password": "alvaro123"
 }
 
 #### LOGIN

@@ -25,7 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /* ================================================================================= */
 
-Route::post('soli', [ReserveController::class, "storeSolicitud"]);
+Route::post('/soli', [ReserveController::class, "storeSolicitud"]);
+// Route::get('/solicitudes', [ReserveController::class, "index"]);
+
 
 
 /* ================================================================================= */
@@ -40,10 +42,12 @@ Route::prefix("v1/auth")->group(function () {
     Route::post('/registro', [AuthController::class, "registro"]);
 
 
-
     Route::middleware("auth:sanctum")->group(function () {
         Route::get('/perfil', [AuthController::class, "perfil"]);
         Route::post('/logout', [AuthController::class, "logout"]);
+
+        Route::post('/solicitudes', [ReserveController::class, "getSolicitudes"]);
+        // Route::get('/solicitudes', [ReserveController::class, "index"])->middleware(["role:primary"]);
     });
 });
 
